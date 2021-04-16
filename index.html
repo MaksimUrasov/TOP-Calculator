@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CALCULATOR</title>
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body class="enableBlur">
+    <div id="background"></div>
+    <div id="mainFrame" class="disableBlur" >
+
+        <div id="calcBody" >
+            <div id="display">
+                CALC IS ON
+            </div>
+            <div id="centerContainer"> 
+
+                <div id="memoryContainer">
+                    <div class="memoryButtons button">M+</div>
+                    <div class="memoryButtons button">M-</div>
+                    <div class="memoryButtons button">MC</div>
+                    <div class="memoryButtons button">MR</div>
+                    <div class="memoryButtons button delete" onclick="deleteDigit()"><i class="fas fa-backspace"></i></div>
+                    
+                </div>
+
+            
+                <div id="centerLeftContainer">
+                    <div class="mainDigits button" onclick="proceedNumberPress(`7`)">7</div>
+                    <div class="mainDigits button" onclick="proceedNumberPress(`8`)">8</div>
+                    <div class="mainDigits button" onclick="proceedNumberPress(`9`)">9</div>
+                    <div class="mainDigits button" onclick="proceedNumberPress(`4`)">4</div>
+                    <div class="mainDigits button" onclick="proceedNumberPress(`5`)">5</div>
+                    <div class="mainDigits button" onclick="proceedNumberPress(`6`)">6</div>
+                    <div class="mainDigits button" onclick="proceedNumberPress(`1`)">1</div>
+                    <div class="mainDigits button" onclick="proceedNumberPress(`2`)">2</div>
+                    <div class="mainDigits button" onclick="proceedNumberPress(`3`)">3</div>
+                    <div class="mainDigits button" onclick="proceedNumberPress(`0`)">0</div>
+                    <div class="mainDigits button" onclick="proceedNumberPress(`.`)">.</div>
+                    <div class="mainDigits button" onclick="clearAll()">C</div>
+                </div>
+
+                <div id="centerRightContainer">
+                    
+                    <div class="rightSideButtons button" onclick="makeAction(`÷`)">÷</div>
+                    <div class="rightSideButtons button" onclick="makeAction(`x`)">x</div>
+                    <div class="rightSideButtons button" onclick="makeAction(`-`)">-</div>
+                    <div class="rightSideButtons button" onclick="makeAction(`+`)">+</div>
+                    <div class="rightSideButtons button" onclick="makeAction(`=`)">=</div>
+                </div>
+            </div>   
+
+            
+        </div>
+    </div>
+
+
+    <script src="test.js"></script>
+    <script src="https://kit.fontawesome.com/3306c841ed.js" crossorigin="anonymous"></script>
+</body>
+
+</html> 

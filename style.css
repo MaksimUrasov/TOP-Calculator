@@ -1,0 +1,185 @@
+body {
+    margin:0px;
+    height:100%;
+    width:100vw; 
+    color: white;
+    
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px  white, -1px -1px 2px  white;
+    /* box-shadow: 10px 10px 20px  rgb(238, 25, 25), -10px -10px 20px  rgb(252, 44, 44); */
+    text-align: center;
+
+    
+}
+
+@font-face{
+    font-family:'digital-clock-font';
+    src: url('/font/digital-7\ \(italic\).ttf');
+}
+
+/* not used @media because it gives steps, text size in vh is much better */
+/* @media (max-height:300px){
+    body {
+        font-size: 50%em;
+    }
+
+}
+@media (min-height:600px){
+    body {
+        font-size: 200%;
+  }
+}  */
+
+.enableBlur >* {      /* enables blur to kids too, only such way kids have possibility to override blur */
+    filter: blur(10px);
+    /* -webkit-filter: blur(10px); */
+   
+}
+
+.disableBlur {
+    filter: blur(0px);
+}
+
+#background {
+    background-image: url(/img/b.jpg);
+    height:100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    max-height:100vh;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* padding-top: calc((100vh - 500px) /2); */
+}
+
+
+#calcBody {
+    margin: 10vh auto;
+    width: 65vh;  /* also depends on height*/
+    /* border: 1px red solid; */
+    position: relative;
+
+    
+        
+}
+
+
+#display {
+    margin:0;
+    min-height: 8.5vh; 
+    border: 2px solid white;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px 5px rgba(255, 255, 255, 0.651);
+    text-align: right;
+    padding:3vh;
+    font-family:'digital-clock-font' ;
+    font-size: 12vh;
+    color: rgb(95, 95, 95);
+ 
+}
+
+.blink {
+    transform:scale(0.98);
+
+}
+
+#centerContainer {
+    display: grid;
+    grid-template-columns: 55vh 10vh;
+    grid-template-rows: auto auto;
+}
+
+#memoryContainer {
+    /* height:25vh; */
+    display: flex;
+    justify-content: space-between;
+    font-size: 3vh; 
+    margin:2vh 3vh 2vh 0;
+    
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 2;
+        
+}
+.memoryButtons {
+    min-width: 9vh;
+    padding: 1vh 0px;
+}
+
+.delete {
+    font-size: 3vh;
+}
+
+
+#centerLeftContainer{
+    /* width:55vh;  depends on screen size, calculator width is 65vh */
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto auto auto auto;
+    column-gap: 3vh;
+    row-gap: 3vh;
+    margin-right: 3vh;
+    /* border: 1px solid pink; */
+
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    
+}
+
+.mainDigits{
+    font-size: 8vh;
+}
+
+#centerRightContainer{
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: 0.8fr 0.8fr 0.8fr 0.8fr 1.5fr ;
+    row-gap: 3vh;
+    margin-top: 2vh;
+    /* border: 1px solid blue; */
+
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 3;
+
+    font-size: 6vh;
+
+    
+}
+
+.button {
+    border: 1px solid white;
+    border-radius: 4px;
+    padding: 1vh 0px;   /*main here is top and bottom padding*/
+    background-color: rgba(252, 244, 227, 0.15);  /*RGBA instead of opacity */
+    transition: 0.3s;
+    box-shadow: 0px 0px 10px 3px rgba(255, 255, 255, 0.651);
+
+   
+}
+
+
+
+.button:hover {
+    box-shadow: 0px 0px 15px 8px rgba(255, 255, 255, 0.651);
+
+}
+
+.button:active {
+    position:relative;
+    top: 3px;
+    box-shadow: 0px 0px 15px 10px rgba(169, 245, 151, 0.651);
+    
+
+}
+
+
+
