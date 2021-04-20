@@ -1,11 +1,16 @@
-const screenNodeNode = document.querySelector("#display");
+const displayNode = document.querySelector("#display");
+const mrButton = document.querySelector("#mr");
+
+let actionButtonPressed = false;
+let memoryButtonPressed = false;
+let mr = 0;
 
 // below object is the main "memory" objcect, it saves the pairs like this: number + operator and then add a result or number if it is too early to calculate the result.
 // example below:
 // you press 123.123 and "+", memoryArray gets new object1 = {digit: "123.123", signToAct: "+", result: 123.123}
 // then you press 234.234 and "-", memoryArray gets one additional object2 = {digit: "234.234", signToAct: "-", result: 357.357}  
 // so the result calculated using this data: first object1[result] + object1[signToAct] + object2[digit]. 
-// Operator button is called action button, together with "=" sign.
+// Operator buttons are called action buttons, together with "=" sign.
 
 let memoryArray = [
     {digit: NaN,
@@ -14,57 +19,67 @@ let memoryArray = [
     }
 ]
     
-// console.log(memoryArray)
-let actionButtonPressed = false;
 
 function operations(a, op, b) {
     console.log(a, op, b )
     let n = {
         "+": a+b,
         "-": a-b,
-        "x": a*b,
-        "÷": a/b,
-        "=": b,   // have to  "leave" on display first digit if there is no second digit yet:
+        "*": a*b,
+        "/": a/b,
+        "Enter": b,   // have to  "leave" on display first digit if there is no second digit yet:
+                    // can not change Enter to "=" to have enabled keyboard support
         "NaN":b,  // have to  "leave" on display first digit if there is no second digit yet:
     }
     
-    let result = n[`${op}`]
-     // console.log(result)
-
-    result = Number(result.toFixed(9));  // .toFixed(9)  toFixed limits the amount of numbers after the floating point, does not suit if number is 12345.123456789 etc 
+    let result = Number(n[`${op}`])
     //  console.log(result)
 
-    result = result.toPrecision(10);  //  .toPrecision limits the amount of total numbers. but there is still problem with number like 0.0000007802474017 -  still too long
-    // console.log(result)
+    result = result.toPrecision(6); 
+    console.log(result)
        
-    result = Number.parseFloat(result); // to shorten the number if it looks like this after toPrecision 0.0000001234567890:
+    // result = Number.parseFloat(result); // to shorten the number if it looks like this after toPrecision 0.0000001234567890:
     // console.log(result)
 
-    return result  
+    //to solve 0.300000
+    result = !result.toString().includes("e") ? result = parseFloat(result) : result;
+    // to solve 0.00000123457
+    result = result.toString().includes("0.00000") ? result.toFixed(10) : result;
+    // more info why this mathematical decision was used is explained there: 
+    // https://maksimurasov.github.io/TOP-testing-MATH-for-calculator/ 
+    // https://github.com/MaksimUrasov/TOP-testing-MATH-for-calculator.git
+
+    return result;  
 }
 
 function proceedNumberPress(numberPressed) {
 
-    if (screenNodeNode.textContent.includes("CALC") || actionButtonPressed ) { // clear the starting screen first or  check if the previous button pressed was action button
-        screenNodeNode.textContent = "";
-    }  
-    // else if is not suitable, because I need to check all conditions, not one IF "or" the other IF
- 
-    if (!checkIfDisplayIsFull() && ( !screenNodeNode.textContent.includes(".") || numberPressed != "." ) ) { // in any case display must not be full. Then two options to contunue: 1) pressed dot and there are no dots already  or 2) pressed number, not dot again.
+    // first clear the starting screen first or  check if the previous button pressed was action button or memory operation button:
+    if (displayNode.textContent.includes("CALC") || actionButtonPressed || memoryButtonPressed) { 
+        displayNode.textContent = "";
+    } // "else if" is not suitable, because I need to apply both IF conditions, not one or the other.  
+
+    // if the first digit to enter is zero (like 000005), we do not add it to display 
+    if (numberPressed == "0" && displayNode.textContent === "0" ) {
+        // do nothing
+    }
+    // in any case display must not be full. Then two options to contunue: 1) pressed dot and there are no dots already  or 2) pressed number, not dot again.
+    else if (!checkIfDisplayIsFull() && ( !displayNode.textContent.includes(".") || numberPressed != "." ) ) { 
         singleNumberNode = document.createTextNode(`${numberPressed}`);
-        screenNodeNode.appendChild(singleNumberNode);
+        displayNode.appendChild(singleNumberNode);
     }
 
-    // lastly declare that last button press was not an action button:
+    // lastly declare that last button press was not an action or memory button:
     actionButtonPressed = false;
+    memoryButtonPressed = false;
 }
 
 
 function checkIfDisplayIsFull() {
-    if (screenNodeNode.textContent.length >= 10) { 
-        screenNodeNode.classList.add("blink");
+    if (displayNode.textContent.length >= 10) { 
+        displayNode.classList.add("blink");
         setTimeout(() => { 
-            screenNodeNode.classList.remove("blink")
+            displayNode.classList.remove("blink")
         }, 200);
         return true;
     } else {
@@ -74,11 +89,7 @@ function checkIfDisplayIsFull() {
 
 
 
-
-
 function makeAction(signPressed) {
-
-
    
     // if action button is pressed after another action button or "=" button, then we only have to save that new action sign, 
     //do not have to make calculations as they were done on previous action button press.
@@ -94,41 +105,38 @@ function makeAction(signPressed) {
         return
     } else {
 
-
         // first we declare that an action button has been pressed, to start collecting a fresh number by pressing number buttons
         actionButtonPressed = true;
 
-        
         // next, save the current sign and Display number to "memoryArray"
-        
         let i =  memoryArray.length; // number of inner arrays before we add a new one
         // console.log("i:" + i)
-        let currentNumberAndActionObject = {digit: screenNodeNode.textContent, signToAct: signPressed};
+        let currentNumberAndActionObject = {digit: displayNode.textContent, signToAct: signPressed};
 
         memoryArray.push(currentNumberAndActionObject)
     
         console.log(memoryArray)
     
-        //then make calculation and display it: 
+        //then make calculation: 
         let resultOfCaclulation = operations(
                             parseFloat(memoryArray[`${i-1}`].result),// previous calculation result (or first digit of first calculation)
                             `${memoryArray[i-1].signToAct}`, // previous operand to make a calculation 
                             parseFloat(memoryArray[i].digit), // the second digit for calculation
                             
         )
-        
-        
-        // console.log(memoryArray[i].digit + " before for loop")
-        screenNodeNode.textContent = `${resultOfCaclulation}`; 
+
+        // and display result:
+        displayNode.textContent = `${resultOfCaclulation}`; 
         memoryArray[i].result = resultOfCaclulation;
     }
 }
  
 
+
 // rest small functions
 
 function clearAll() {
-    screenNodeNode.textContent = "0";
+    displayNode.textContent = "0";
     memoryArray = [
         {digit: NaN,
         signToAct:  NaN,
@@ -140,6 +148,74 @@ function clearAll() {
 
 
 function deleteDigit() {
-    screenNodeNode.lastChild.remove()
-        
+    displayNode.lastChild.remove()
 }
+
+
+
+function memoryButtonActions(action) {
+
+     // first we declare that an action button has been pressed, to start collecting a fresh number
+     // by pressing number buttons after memory action is finished, 
+    memoryButtonPressed = true;
+    switch(action) {
+        case `M+`:
+            mr += parseFloat(displayNode.textContent);
+            mrButton.classList.add("mr");
+            break;
+        case `M-`:
+            mr -= parseFloat(displayNode.textContent);
+            mrButton.classList.add("mr")
+            break;
+        case `MR`:
+            displayNode.textContent = mr; 
+            break;
+        case `MC`:
+            mr = 0;
+            mrButton.classList.remove("mr")
+            break;
+        } 
+}
+
+
+// keyboard support below
+
+document.addEventListener('keydown', (e) => {  
+// console.log(e.key)
+    switch(e.key) {
+        case `0`:
+        case `1`:
+        case `2`:
+        case `3`:
+        case `4`:
+        case `5`:
+        case `6`:
+        case `7`:
+        case `8`:
+        case `9`:
+        case `.`:
+            proceedNumberPress(e.key);
+            break;
+
+        case `/`:
+        case `*`:
+        case `-`:
+        case `+`:
+        case `Enter`:
+            makeAction(e.key)
+            break;
+        case `c`:
+            clearAll()
+            break;
+        case `Backspace`:
+            deleteDigit()
+            break;
+        case `m`:
+            memoryButtonActions("MR")     
+        default:
+            return;
+        } 
+        
+
+ }) 
+

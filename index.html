@@ -16,10 +16,10 @@
             <div id="centerContainer"> 
 
                 <div id="memoryContainer">
-                    <div class="memoryButtons button">M+</div>
-                    <div class="memoryButtons button">M-</div>
-                    <div class="memoryButtons button">MC</div>
-                    <div class="memoryButtons button">MR</div>
+                    <div class="memoryButtons button" onclick="memoryButtonActions(`M+`)">M+</div>
+                    <div class="memoryButtons button" onclick="memoryButtonActions(`M-`)">M-</div>
+                    <div class="memoryButtons button" onclick="memoryButtonActions(`MR`)" id="mr">MR</div>
+                    <div class="memoryButtons button" onclick="memoryButtonActions(`MC`)">MC</div>
                     <div class="memoryButtons button delete" onclick="deleteDigit()"><i class="fas fa-backspace"></i></div>
                     
                 </div>
@@ -42,17 +42,27 @@
 
                 <div id="centerRightContainer">
                     
-                    <div class="rightSideButtons button" onclick="makeAction(`÷`)">÷</div>
-                    <div class="rightSideButtons button" onclick="makeAction(`x`)">x</div>
+                    <div class="rightSideButtons button" onclick="makeAction(`/`)">÷</div>
+                    <div class="rightSideButtons button" onclick="makeAction(`*`)">x</div>
                     <div class="rightSideButtons button" onclick="makeAction(`-`)">-</div>
                     <div class="rightSideButtons button" onclick="makeAction(`+`)">+</div>
-                    <div class="rightSideButtons button" onclick="makeAction(`=`)">=</div>
+                    <div class="rightSideButtons button" onclick="makeAction(`Enter`)">=</div> 
                 </div>
             </div>   
 
             
         </div>
     </div>
+
+    <footer class="disableBlur">
+        <ul>
+            <li>Responsive Design</li>
+            <li>Keyboard support</li> 
+            <li><a href="https://maksimurasov.github.io/TOP-testing-MATH-for-calculator/">Floating point control project</a></li>
+        </ul> 
+        
+        
+    </footer>
 
 
     <script src="test.js"></script>
