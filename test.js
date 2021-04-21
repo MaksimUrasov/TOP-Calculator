@@ -36,7 +36,7 @@ function operations(a, op, b) {
     //  console.log(result)
 
     result = result.toPrecision(6); 
-    console.log(result)
+    // console.log(result)
        
     // result = Number.parseFloat(result); // to shorten the number if it looks like this after toPrecision 0.0000001234567890:
     // console.log(result)
@@ -52,21 +52,127 @@ function operations(a, op, b) {
     return result;  
 }
 
-function proceedNumberPress(numberPressed) {
 
-    // first clear the starting screen first or  check if the previous button pressed was action button or memory operation button:
-    if (displayNode.textContent.includes("CALC") || actionButtonPressed || memoryButtonPressed) { 
-        displayNode.textContent = "";
-    } // "else if" is not suitable, because I need to apply both IF conditions, not one or the other.  
 
-    // if the first digit to enter is zero (like 000005), we do not add it to display 
-    if (numberPressed == "0" && displayNode.textContent === "0" ) {
-        // do nothing
+// let check = /a/;
+
+// console.log(check.test(displayNode.textContent))
+
+
+
+function proceedNumberPress(numberPressed) {  // there are many options there, depending on button pressed and a display value, 
+                                                // so I have created a tree of switch statements to clarify all cases.
+
+    // such  usage of regex in switch statement I have borrowed from there:
+    //  https://www.sitepoint.com/community/t/using-regexp-in-switch-case-statement/4880/3
+    
+    
+    if (actionButtonPressed || memoryButtonPressed) {
+        clearDisplay();
     }
-    // in any case display must not be full. Then two options to contunue: 1) pressed dot and there are no dots already  or 2) pressed number, not dot again.
-    else if (!checkIfDisplayIsFull() && ( !displayNode.textContent.includes(".") || numberPressed != "." ) ) { 
-        singleNumberNode = document.createTextNode(`${numberPressed}`);
-        displayNode.appendChild(singleNumberNode);
+
+    
+    const rX= /^(([A-Z ]+)|(0)|(\d+)|(\d*\.\d*)|(^(?![\s\S])))$/  
+                //greeting|"0"| int |  float   | empty string  
+    let test= rX.exec(displayNode.textContent)
+
+    switch (test[1]) { //switch according dispaly value
+        case test[2]: //when display is welcome greeting
+            switch (numberPressed) {
+                case ".": // pressed dot
+                    displayNode.textContent = "0";
+                    addButtonValueToDisplay();     
+                    break;
+
+                case "0": // pressed zero
+                default: //when a number is pressed
+                    clearDisplay();
+                    addButtonValueToDisplay();
+                    break;
+            }
+        break;
+
+        case test[3]: //when display only one "0", after pressing C
+            switch (numberPressed) {
+                case ".": // pressed dot
+                    addButtonValueToDisplay();
+                    break;
+
+                case "0": // pressed zero
+                    // do nothing
+                    break;
+        
+                default: //when a number is pressed
+                    clearDisplay();
+                    addButtonValueToDisplay();
+                    break;
+            }
+        break;
+
+        case test[4]: //when display contains any integer numbers, no floats
+            switch (numberPressed) {
+                case ".": // pressed dot
+                case "0": // pressed zero
+                default: //when a number is pressed
+                    addButtonValueToDisplay();
+                    break;
+            }
+        break;
+
+        case test[5]: //when display contains float number, with "."
+            switch (numberPressed) {
+                case ".": // pressed dot
+                    // do nothing
+                    break;
+
+                case "0": // pressed zero
+                default: //when a number is pressed
+                    addButtonValueToDisplay();
+                    break;
+            }
+        break;
+
+        case test[6]: // empty display 
+        switch (numberPressed) {
+            case ".": // pressed dot
+                displayNode.textContent = "0";
+                addButtonValueToDisplay(); 
+                break;
+
+            case "0": // pressed zero
+            default: //when a number is pressed
+                addButtonValueToDisplay();
+                break;
+        }
+        break;
+        // default:
+        //     break;
+    }
+
+    
+
+    function clearDisplay(){
+        displayNode.textContent = "";
+    }
+
+    function addButtonValueToDisplay(){
+        if (!checkIfDisplayIsFull() ) {
+            singleNumberNode = document.createTextNode(`${numberPressed}`);
+            displayNode.appendChild(singleNumberNode)
+        }
+        
+    }
+
+    function checkIfDisplayIsFull() {
+        if (displayNode.textContent.length >= 10) { 
+            displayNode.classList.add("blink");
+            setTimeout(() => { 
+                displayNode.classList.remove("blink")
+            }, 200);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // lastly declare that last button press was not an action or memory button:
@@ -75,17 +181,7 @@ function proceedNumberPress(numberPressed) {
 }
 
 
-function checkIfDisplayIsFull() {
-    if (displayNode.textContent.length >= 10) { 
-        displayNode.classList.add("blink");
-        setTimeout(() => { 
-            displayNode.classList.remove("blink")
-        }, 200);
-        return true;
-    } else {
-        return false;
-    }
-}
+
 
 
 
@@ -148,7 +244,13 @@ function clearAll() {
 
 
 function deleteDigit() {
-    displayNode.lastChild.remove()
+
+    if (displayNode.textContent.length > 1) {
+        displayNode.textContent = displayNode.textContent.slice(0,-1)
+    } else {
+        displayNode.textContent = "0";
+    }
+    
 }
 
 
