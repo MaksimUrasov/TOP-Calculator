@@ -20,10 +20,10 @@ body {
 }
 
 
-@font-face{
+/* @font-face{
     font-family:digital-clock-font;
     src: url("/font/digital7italic.ttf");
-}
+} */
 
 /* not used @media because it gives steps, text size in vh is much better */
 /* @media (max-height:300px){
