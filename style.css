@@ -21,7 +21,7 @@ body {
 
 @font-face{
     font-family:digital-clock-font;
-    src: url("/font/digital7italic.ttf");
+    src: url("font/digital7italic.ttf");
 }
 
 /* not used @media because it gives steps, text size in vh is much better */
