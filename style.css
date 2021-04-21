@@ -54,7 +54,7 @@ https://maksimurasov.github.io/font/digital7italic.ttf now */
 }
 
 #background {
-    background-image: url(/img/b.jpg);
+    background-image: url("/img/b.jpg");
     height:100vh;
     background-repeat: no-repeat;
     background-size: cover;
@@ -74,7 +74,6 @@ https://maksimurasov.github.io/font/digital7italic.ttf now */
     width: 65vh;  /* also depends on height*/
     /* border: 1px red solid; */
     position: relative;
-  
         
 }
 
