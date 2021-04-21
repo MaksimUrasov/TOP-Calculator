@@ -16,8 +16,7 @@ let memoryArray = [
     {digit: NaN,
     signToAct:  NaN,
     result: NaN
-    }
-]
+    } ]
     
 
 function operations(a, op, b) {
