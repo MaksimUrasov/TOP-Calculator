@@ -56,7 +56,7 @@ body {
 
 #calcBody {
     margin: 10vh auto;
-    width: 65vh;  /* also depends on height*/
+    max-width: 65vh;  /* also depends on height*/
     /* border: 1px red solid; */
     position: relative;
         
@@ -84,7 +84,7 @@ body {
 
 #centerContainer {
     display: grid;
-    grid-template-columns: 55vh 10vh;
+    grid-template-columns: 8fr 1.5fr;
     grid-template-rows: auto auto;
 }
 
@@ -183,6 +183,7 @@ footer {
     bottom:0;
     right:0;
 
+    font-size: small;
     text-shadow: 1px 1px 1px var(--color);
     color: var(--color);
     text-align: left;
